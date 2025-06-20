@@ -1,0 +1,60 @@
+# Geant4 macros for demonstration of x-ray hardening
+
+# Change the default number of workers (in multi-threading mode) 
+/run/numberOfThreads 10
+#
+# Initialize kernel
+/run/initialize
+/control/cout/ignoreThreadsExcept 0
+
+# Set filter to 0.6 mm Cu
+/sensor/led/thickness 0.15 mm
+/sensor/hed/thickness 3 mm
+/sensor/filter/thickness 0.6 mm
+/sensor/pcb/thickness 0.6 mm
+
+/sensor/world/material G4_Galactic
+
+# create output directory
+/control/shell mkdir -p ./output/hardening
+
+#--------------------------------------------------------------------- 
+# macro execution
+# load csv tube data
+# set output file name
+# shoot n photons
+
+#---------------------------------------------------------------------
+/gun/useTubeData ./data/tube_spectrum/tungsten_12deg_0.8mmAl_080kVp.csv
+/analysis/setFileName ./output/hardening/tube080kVp.root
+/run/beamOn 1000000
+
+#---------------------------------------------------------------------
+/gun/useTubeData ./data/tube_spectrum/tungsten_12deg_0.8mmAl_100kVp.csv
+/analysis/setFileName ./output/hardening/tube100kVp.root
+/run/beamOn 1000000
+
+#---------------------------------------------------------------------
+/gun/useTubeData ./data/tube_spectrum/tungsten_12deg_0.8mmAl_120kVp.csv
+/analysis/setFileName ./output/hardening/tube120kVp.root
+/run/beamOn 1000000
+
+#---------------------------------------------------------------------
+/gun/useTubeData ./data/tube_spectrum/tungsten_12deg_0.8mmAl_140kVp.csv
+/analysis/setFileName ./output/hardening/tube140kVp.root
+/run/beamOn 1000000
+
+#---------------------------------------------------------------------
+/gun/useTubeData ./data/tube_spectrum/tungsten_12deg_0.8mmAl_160kVp.csv
+/analysis/setFileName ./output/hardening/tube160kVp.root
+/run/beamOn 1000000
+
+#---------------------------------------------------------------------
+/gun/useTubeData ./data/tube_spectrum/tungsten_12deg_0.8mmAl_180kVp.csv
+/analysis/setFileName ./output/hardening/tube180kVp.root
+/run/beamOn 1000000
+
+#---------------------------------------------------------------------
+/gun/useTubeData ./data/tube_spectrum/tungsten_12deg_0.8mmAl_200kVp.csv
+/analysis/setFileName ./output/hardening/tube200kVp.root
+/run/beamOn 1000000

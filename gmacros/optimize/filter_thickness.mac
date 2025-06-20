@@ -1,0 +1,39 @@
+# Geant4 macros for filter thickness optimization
+
+# Change the default number of workers (in multi-threading mode) 
+/run/numberOfThreads 10
+#
+# Initialize kernel
+/run/initialize
+/control/cout/ignoreThreadsExcept 0
+
+# scintillator thickness
+/control/alias ledZum 150
+/control/alias hedZmm 3
+
+# must be three digit (ex. 080 for 80 kVp)
+/control/alias tube_voltage 160
+
+/sensor/led/thickness {ledZum} um
+/sensor/hed/thickness {hedZmm} mm
+
+# create output directory
+/control/shell mkdir -p ./output/filter_thickness
+
+/gun/useTubeData ./data/tube_spectrum/tungsten_12deg_0.8mmAl_{tube_voltage}kVp.csv
+/sensor/filter/material G4_Cu 
+/sensor/world/material G4_Galactic
+
+/sensor/filter/thickness 100 um
+#--------------------------------------------------------------------- 
+# loop of executions of the macro for single run
+/control/macroPath ./gmacros/optimize
+/control/loop filter_thickness_singlerun.mac filterZum 100 1500 100
+
+#--------------------------------------------------------------------- 
+# Special case : zero filter thickness
+/sensor/filter/material G4_Galactic
+/sensor/filter/thickness 1 um
+/sensor/pcb/thickness 1 um
+/analysis/setFileName ./output/filter_thickness/tube{tube_voltage}kVp_{ledZum}umLED_{hedZmm}mmHED_0umCu.root
+/run/beamOn 1000000

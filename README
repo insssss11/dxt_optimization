@@ -1,0 +1,47 @@
+0. How to run
+In the project directory,
+>> mkdir build
+>> cd build
+>> cmake ..
+>> make -j
+
+To run with interactive session
+>> ./optimize_dxt
+To run with geant4 macros, see below.
+
+1. Geometry
+---------------------------
+| led000 | led001 | led002|
+---------------------------
+|           FR4           |
+---------------------------
+|         Cu filter       |
+---------------------------
+|           FR4           |
+---------------------------
+| hed000 | hed001 | hed002|
+---------------------------
+
+Sensitive volumes : led000, led001, led002, filter, hed000, hed001, hed002
+To mapulate dimensions and materials, see UI commands in "/sensor/"
+
+2. Output Data Structure
+
+All data are recorded events by events.
+
+Trees                 - eDepSum         : Total energy deposit.
+(led000 ~ hed002)     - prmary          : 1 if primary beam entered otherwise 0.
+                      - nParts          : The numbers of photons entered.
+                      - eParts[nParts]  : The energies at the time of entrance.
+                      - eDeps[nParts]   : The energy deposits by indivisual photon tracks.
+                      - partEncs        : PDG encodings of incident particles (not used)
+
+3. Geant4 macro files
+  (1) gmacros/demo/hardening.mac    : Load photon energy spectrum files and demonstrate beam hardening.
+  >> ./optimize_dxt gmacros/demo/hardening.mac
+  >> ./plot_hardening
+  
+  (2) optimize/filter_thickness.mac : Calculate FORM factors of Cu filter with various thickness in 1.6 mm PCB.
+  >> ./optimize_dxt gmacros/optimize/filter_thickness.mac
+  >> ./print_filter_fom output/filter_thickness/tube160kVp_150umLED_3mmHED 0 1500 100
+  To modify FOM definition, rewrite "double calFOM()" in the bottom of "print_filter_fom.cc".

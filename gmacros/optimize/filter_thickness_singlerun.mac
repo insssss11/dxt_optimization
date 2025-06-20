@@ -1,0 +1,5 @@
+# Geant4 macros for filter thickness optimization (single run)
+
+/sensor/filter/thickness {filterZum} um
+/analysis/setFileName ./output/filter_thickness/tube{tube_voltage}kVp_{ledZum}umLED_{hedZmm}mmHED_{filterZum}umCu.root
+/run/beamOn 1000000
